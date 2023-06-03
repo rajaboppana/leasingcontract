@@ -37,8 +37,9 @@ public class ContractApiTest {
     public void testGetContracts() {
         // Arrange
         List<ContractDTO> contracts = new ArrayList<>();
-        contracts.add(new ContractDTO(1, new BigDecimal("1000.00"), new CustomerDTO(), new VehicleDTO()));
-        contracts.add(new ContractDTO(2, new BigDecimal("1500.00"), new CustomerDTO(), new VehicleDTO()));
+        contracts.add(new ContractDTO(new BigDecimal("1000.00"), new CustomerDTO(), new VehicleDTO()));
+        contracts.add(new ContractDTO(new BigDecimal("1500.00"), new CustomerDTO(), new VehicleDTO()));
+        contracts.add(new ContractDTO(new BigDecimal("1500.00"), new CustomerDTO(), new VehicleDTO()));
         when(contractService.getContracts()).thenReturn(contracts);
 
         // Act

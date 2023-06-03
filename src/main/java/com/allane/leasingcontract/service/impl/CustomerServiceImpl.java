@@ -37,4 +37,19 @@ public class CustomerServiceImpl implements CustomerService {
 
         return modelMapper.map(updatedCustomer, CustomerDTO.class);
     }
+
+    @Override
+    public CustomerDTO getCustomer(int id) throws ResourceNotFoundException {
+        CustomerEntity customerEntity = customerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + id));
+
+        return modelMapper.map(customerEntity, CustomerDTO.class);
+    }
+
+    @Override
+    public void deleteCustomer(int id) throws ResourceNotFoundException {
+        CustomerEntity customerEntity = customerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + id));
+        customerRepository.delete(customerEntity);
+    }
 }

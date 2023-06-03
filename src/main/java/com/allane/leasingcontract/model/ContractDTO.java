@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContractDTO {
-    private int id;
     private BigDecimal monthlyRate;
     private CustomerDTO customer;
     private VehicleDTO vehicle;

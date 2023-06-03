@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class ContractEntity {
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "monthly_rate", nullable = false)

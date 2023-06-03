@@ -4,6 +4,7 @@ import com.allane.leasingcontract.entity.ContractEntity;
 import com.allane.leasingcontract.model.ContractDTO;
 import com.allane.leasingcontract.repository.ContractRepository;
 import com.allane.leasingcontract.service.ContractService;
+import com.allane.leasingcontract.service.exception.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -36,5 +37,38 @@ public class ContractServiceImpl implements ContractService {
        }
 
         return contractDTOList;
+    }
+
+    @Override
+    public ContractDTO createContract(ContractDTO contractDTO) {
+        ContractEntity contractEntity = modelMapper.map(contractDTO, ContractEntity.class);
+        ContractEntity savedContract = contractRepository.save(contractEntity);
+        return modelMapper.map(savedContract, ContractDTO.class);
+    }
+
+    @Override
+    public ContractDTO updateContract(int id, ContractDTO contractDTO) throws ResourceNotFoundException {
+        ContractEntity existingContract = contractRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + id));
+
+        modelMapper.map(contractDTO, existingContract);
+        ContractEntity updatedContract = contractRepository.save(existingContract);
+
+        return modelMapper.map(updatedContract, ContractDTO.class);
+    }
+
+    @Override
+    public ContractDTO getContract(int id) throws ResourceNotFoundException {
+        ContractEntity contractEntity = contractRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + id));
+
+        return modelMapper.map(contractEntity, ContractDTO.class);
+    }
+
+    @Override
+    public void deleteContract(int id) throws ResourceNotFoundException {
+        ContractEntity contractEntity = contractRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + id));
+        contractRepository.delete(contractEntity);
     }
 }

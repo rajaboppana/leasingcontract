@@ -28,4 +28,16 @@ public class CustomerController {
         CustomerDTO updatedCustomer = customerService.updateCustomer(id, customerDTO);
         return ResponseEntity.ok(updatedCustomer);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerDTO> getCustomer(@PathVariable int id) throws ResourceNotFoundException {
+        CustomerDTO customer = customerService.getCustomer(id);
+        return ResponseEntity.ok(customer);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable int id) throws ResourceNotFoundException {
+       customerService.deleteCustomer(id);
+        return ResponseEntity.ok().build();
+    }
 }

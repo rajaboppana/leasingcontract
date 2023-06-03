@@ -7,4 +7,6 @@ public interface CustomerService {
 
     CustomerDTO createCustomer(CustomerDTO customerDTO);
     CustomerDTO updateCustomer(int id, CustomerDTO customerDTO) throws ResourceNotFoundException;
+    CustomerDTO getCustomer(int id) throws ResourceNotFoundException;
+    void deleteCustomer(int id) throws ResourceNotFoundException;
 }

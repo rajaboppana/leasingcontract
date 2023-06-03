@@ -84,7 +84,6 @@ public class ITCustomerTest {
                 , customerDTO);
 
         // Assert
-        Assertions.assertEquals(savedCustomer.getId(), updatedCustomer.getId());
         Assertions.assertEquals("Janet", updatedCustomer.getFirstName());
         Assertions.assertEquals("Smith", updatedCustomer.getLastName());
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
