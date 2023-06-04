@@ -21,7 +21,7 @@ public class ContractController {
     }
 
     @GetMapping
-    public ResponseEntity<ContractsTransfer> getContractById() {
+    public ResponseEntity<ContractsTransfer> getContracts() {
         List<ContractDTO> contracts = contractService.getContracts();
         if (contracts == null) {
             return ResponseEntity.notFound().build();

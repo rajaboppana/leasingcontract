@@ -12,5 +12,5 @@ import java.util.List;
 @NoArgsConstructor
 public class ContractsTransfer {
 
-    private List<ContractDTO> contractDTOList;
+    private List<ContractDTO> contracts;
 }
