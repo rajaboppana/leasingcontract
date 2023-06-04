@@ -1,6 +1,6 @@
 ## Usage
 
-1. Find `Dockerfile` and `docker-leasing-schema.sql` files located in the `\src\main\resources\` 
+1. Find `Dockerfile` and `docker-leasing-schema.sql` files located in the project
    directory.
 
 2. Build the Docker image using the following command:
