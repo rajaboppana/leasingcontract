@@ -1,7 +1,11 @@
 package com.allane.leasingcontract.service;
 
 import com.allane.leasingcontract.entity.ContractEntity;
+import com.allane.leasingcontract.entity.CustomerEntity;
+import com.allane.leasingcontract.entity.VehicleEntity;
 import com.allane.leasingcontract.model.ContractDTO;
+import com.allane.leasingcontract.model.CustomerDTO;
+import com.allane.leasingcontract.model.VehicleDTO;
 import com.allane.leasingcontract.repository.ContractRepository;
 import com.allane.leasingcontract.service.exception.ResourceNotFoundException;
 import com.allane.leasingcontract.service.impl.ContractServiceImpl;
@@ -14,7 +18,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,11 +83,9 @@ class ContractServiceImplTest {
     @Test
     void testCreateContract() {
         // Arrange
-        ContractDTO contractDTO = new ContractDTO();
-        ContractEntity savedContractEntity = new ContractEntity();
-        when(modelMapper.map(eq(contractDTO), eq(ContractEntity.class))).thenReturn(savedContractEntity);
+        ContractDTO contractDTO = createSampleContractDTO();
+        ContractEntity savedContractEntity = createSampleContract();
         when(contractRepository.save(any(ContractEntity.class))).thenReturn(savedContractEntity);
-        when(modelMapper.map(eq(savedContractEntity), eq(ContractDTO.class))).thenReturn(new ContractDTO());
 
         // Act
         ContractDTO createdContractDTO = contractService.createContract(contractDTO);
@@ -89,8 +93,16 @@ class ContractServiceImplTest {
         // Assert
         verify(contractRepository, times(1)).save(contractEntityCaptor.capture());
         ContractEntity capturedContractEntity = contractEntityCaptor.getValue();
-        assertEquals(savedContractEntity, capturedContractEntity);
-        assertEquals(createdContractDTO, new ContractDTO());
+        assertEquals(savedContractEntity.getMonthlyRate(), capturedContractEntity.getMonthlyRate());
+        assertEquals(savedContractEntity.getCustomer().getBirthdate().toString(),
+                capturedContractEntity.getCustomer().getBirthdate().toString());
+        assertEquals(savedContractEntity.getCustomer().getFirstName(),
+                capturedContractEntity.getCustomer().getFirstName());
+        assertEquals(createdContractDTO.getMonthlyRate(), contractDTO.getMonthlyRate());
+        assertEquals(createdContractDTO.getCustomer().getBirthdate().toString(),
+                contractDTO.getCustomer().getBirthdate().toString());
+        assertEquals(createdContractDTO.getCustomer().getFirstName(),
+                contractDTO.getCustomer().getFirstName());
     }
 
     @Test
@@ -100,9 +112,7 @@ class ContractServiceImplTest {
         ContractDTO contractDTO = new ContractDTO();
         ContractEntity existingContractEntity = new ContractEntity();
         when(contractRepository.findById(id)).thenReturn(Optional.of(existingContractEntity));
-        doNothing().when(modelMapper).map(eq(contractDTO), any(ContractEntity.class));
         when(contractRepository.save(any(ContractEntity.class))).thenReturn(existingContractEntity);
-        when(modelMapper.map(eq(existingContractEntity), eq(ContractDTO.class))).thenReturn(new ContractDTO());
 
         // Act
         ContractDTO updatedContractDTO = contractService.updateContract(id, contractDTO);
@@ -131,7 +141,6 @@ class ContractServiceImplTest {
         int id = 1;
         ContractEntity contractEntity = new ContractEntity();
         when(contractRepository.findById(id)).thenReturn(Optional.of(contractEntity));
-        when(modelMapper.map(eq(contractEntity), eq(ContractDTO.class))).thenReturn(new ContractDTO());
 
         // Act
         ContractDTO retrievedContractDTO = contractService.getContract(id);
@@ -172,5 +181,49 @@ class ContractServiceImplTest {
 
         // Act and Assert
         assertThrows(ResourceNotFoundException.class, () -> contractService.deleteContract(id));
+    }
+
+    private ContractDTO createSampleContractDTO() {
+        ContractDTO contract = new ContractDTO();
+        contract.setMonthlyRate(new BigDecimal("1000.00"));
+
+        CustomerDTO customer = new CustomerDTO();
+        customer.setFirstName("John");
+        customer.setLastName("Doe");
+        customer.setBirthdate(new Date());
+
+        VehicleDTO vehicle = new VehicleDTO();
+        vehicle.setBrand("Toyota");
+        vehicle.setModel("Camry");
+        vehicle.setModelYear(2022);
+        vehicle.setPrice(new BigDecimal("25000.00"));
+
+        contract.setCustomer(customer);
+        contract.setVehicle(vehicle);
+
+        return contract;
+    }
+
+    private ContractEntity createSampleContract() {
+
+        ContractEntity contract = new ContractEntity();
+        contract.setMonthlyRate(new BigDecimal("1000.00"));
+
+        CustomerEntity customer = new CustomerEntity();
+        customer.setFirstName("John");
+        customer.setLastName("Doe");
+        customer.setBirthdate(new Date());
+
+        VehicleEntity vehicle = new VehicleEntity();
+        vehicle.setBrand("Toyota");
+        vehicle.setModel("Camry");
+        vehicle.setModelYear(2022);
+        vehicle.setPrice(new BigDecimal("25000.00"));
+
+        contract.setCustomer(customer);
+        vehicle.setContract(contract);
+        contract.setVehicle(vehicle);
+
+        return contract;
     }
 }

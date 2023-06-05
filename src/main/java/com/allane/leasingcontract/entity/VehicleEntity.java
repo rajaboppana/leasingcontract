@@ -1,6 +1,7 @@
 package com.allane.leasingcontract.entity;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "vehicle")
@@ -22,8 +23,8 @@ public class VehicleEntity {
     @Column(name = "vin")
     private String vin;
 
-    @Column(name = "price", nullable = false)
-    private double price;
+    @Column(name = "price", nullable = false, precision = 10, scale = 2)
+    private BigDecimal price;
 
     @OneToOne
     @JoinColumn(name = "id")
@@ -69,11 +70,11 @@ public class VehicleEntity {
         this.vin = vin;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

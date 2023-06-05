@@ -1,6 +1,7 @@
 package com.allane.leasingcontract.entity;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "contract")
@@ -10,11 +11,11 @@ public class ContractEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "monthly_rate", nullable = false)
-    private double monthlyRate;
+    @Column(name = "monthly_rate", nullable = false, precision = 10, scale = 2)
+    private BigDecimal monthlyRate;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
+    @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
 
     @OneToOne(mappedBy = "contract")
@@ -28,11 +29,11 @@ public class ContractEntity {
         this.id = id;
     }
 
-    public double getMonthlyRate() {
+    public BigDecimal getMonthlyRate() {
         return monthlyRate;
     }
 
-    public void setMonthlyRate(double monthlyRate) {
+    public void setMonthlyRate(BigDecimal monthlyRate) {
         this.monthlyRate = monthlyRate;
     }
 

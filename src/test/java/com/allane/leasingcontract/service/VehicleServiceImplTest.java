@@ -57,7 +57,7 @@ class VehicleServiceImplTest {
         assertEquals("Camry", capturedVehicleEntity.getModel());
         assertEquals(2022, capturedVehicleEntity.getModelYear());
         assertEquals("ABC123", capturedVehicleEntity.getVin());
-        assertEquals(25000, capturedVehicleEntity.getPrice());
+        assertEquals(BigDecimal.valueOf(25000), capturedVehicleEntity.getPrice());
 
        
     }
@@ -72,7 +72,7 @@ class VehicleServiceImplTest {
         vehicleEntity.setModel("Camry");
         vehicleEntity.setModelYear(2022);
         vehicleEntity.setVin("ABC123");
-        vehicleEntity.setPrice(25000);
+        vehicleEntity.setPrice(new BigDecimal(25000));
 
         when(vehicleRepository.findById(id)).thenReturn(Optional.of(vehicleEntity));
 
@@ -119,10 +119,18 @@ class VehicleServiceImplTest {
         existingVehicleEntity.setModel("Camry");
         existingVehicleEntity.setModelYear(2022);
         existingVehicleEntity.setVin("ABC123");
-        existingVehicleEntity.setPrice(25000);
+        existingVehicleEntity.setPrice(new BigDecimal(25000));
+
+        VehicleEntity updatedVehicleEntity = new VehicleEntity();
+        updatedVehicleEntity.setId(id);
+        updatedVehicleEntity.setBrand("Toyota");
+        updatedVehicleEntity.setModel("Corolla");
+        updatedVehicleEntity.setModelYear(2023);
+        updatedVehicleEntity.setVin("XYZ789");
+        updatedVehicleEntity.setPrice(new BigDecimal(30000));
 
         when(vehicleRepository.findById(id)).thenReturn(Optional.of(existingVehicleEntity));
-        when(vehicleRepository.save(any(VehicleEntity.class))).thenReturn(existingVehicleEntity);
+        when(vehicleRepository.save(any(VehicleEntity.class))).thenReturn(updatedVehicleEntity);
 
         // Act
         VehicleDTO updatedVehicle = vehicleService.updateVehicle(id, updatedVehicleDTO);
@@ -166,7 +174,7 @@ class VehicleServiceImplTest {
         existingVehicleEntity.setModel("Camry");
         existingVehicleEntity.setModelYear(2022);
         existingVehicleEntity.setVin("ABC123");
-        existingVehicleEntity.setPrice(25000);
+        existingVehicleEntity.setPrice(new BigDecimal(25000));
 
         when(vehicleRepository.findById(id)).thenReturn(Optional.of(existingVehicleEntity));
 

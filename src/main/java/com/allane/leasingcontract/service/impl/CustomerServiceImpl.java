@@ -24,7 +24,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDTO createCustomer(CustomerDTO customerDTO) {
         CustomerEntity customerEntity = modelMapper.map(customerDTO, CustomerEntity.class);
         CustomerEntity savedCustomer = customerRepository.save(customerEntity);
-        return modelMapper.map(savedCustomer, CustomerDTO.class);
+        return ContractTransformer.convertToDTO(customerEntity);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
         BeanUtils.copyProperties(customerDTO, existingCustomer, "id");
         CustomerEntity updatedCustomer = customerRepository.save(existingCustomer);
 
-        return modelMapper.map(updatedCustomer, CustomerDTO.class);
+        return ContractTransformer.convertToDTO(updatedCustomer);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class CustomerServiceImpl implements CustomerService {
         CustomerEntity customerEntity = customerRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id: " + id));
 
-        return modelMapper.map(customerEntity, CustomerDTO.class);
+        return ContractTransformer.convertToDTO(customerEntity);
     }
 
     @Override

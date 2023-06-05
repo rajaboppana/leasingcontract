@@ -5,7 +5,6 @@ import com.allane.leasingcontract.model.ContractDTO;
 import com.allane.leasingcontract.repository.ContractRepository;
 import com.allane.leasingcontract.service.ContractService;
 import com.allane.leasingcontract.service.exception.ResourceNotFoundException;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,35 +14,33 @@ import java.util.List;
 public class ContractServiceImpl implements ContractService {
 
     private ContractRepository contractRepository;
-    private ModelMapper modelMapper;
 
-    public ContractServiceImpl(ContractRepository contractRepository, ModelMapper modelMapper) {
+    public ContractServiceImpl(ContractRepository contractRepository) {
         this.contractRepository = contractRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override
     public List<ContractDTO> getContracts() {
-       List<ContractEntity> contracts = contractRepository.findAll();
-        List<ContractDTO> contractDTOList = new ArrayList<ContractDTO>();
-       if(!contracts.isEmpty()){
-           for (ContractEntity contract:contracts) {
-               contractDTOList.add(modelMapper.map(contract, ContractDTO.class));
-           }
-       }
+        List<ContractEntity> contracts = contractRepository.findAll();
+        List<ContractDTO> contractDTOList = new ArrayList<>();
+        if (!contracts.isEmpty()) {
+            for (ContractEntity contract : contracts) {
+                contractDTOList.add(ContractTransformer.convertToDTO(contract));
+            }
+        }
 
-       if(contractDTOList.isEmpty()){
-           throw new RuntimeException("There are no contracts available at this moment");
-       }
+        if (contractDTOList.isEmpty()) {
+            throw new RuntimeException("There are no contracts available at this moment");
+        }
 
         return contractDTOList;
     }
 
     @Override
     public ContractDTO createContract(ContractDTO contractDTO) {
-        ContractEntity contractEntity = modelMapper.map(contractDTO, ContractEntity.class);
+        ContractEntity contractEntity = ContractTransformer.convertToEntity(contractDTO);
         ContractEntity savedContract = contractRepository.save(contractEntity);
-        return modelMapper.map(savedContract, ContractDTO.class);
+        return ContractTransformer.convertToDTO(savedContract);
     }
 
     @Override
@@ -51,10 +48,16 @@ public class ContractServiceImpl implements ContractService {
         ContractEntity existingContract = contractRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + id));
 
-        modelMapper.map(contractDTO, existingContract);
+        ContractTransformer.updateEntityFromDTO(existingContract, contractDTO);
+        if (contractDTO.getVehicle() == null) {
+            existingContract.setVehicle(null);
+        }
+        if (contractDTO.getCustomer() == null) {
+            existingContract.setCustomer(null);
+        }
         ContractEntity updatedContract = contractRepository.save(existingContract);
 
-        return modelMapper.map(updatedContract, ContractDTO.class);
+        return ContractTransformer.convertToDTO(updatedContract);
     }
 
     @Override
@@ -62,7 +65,7 @@ public class ContractServiceImpl implements ContractService {
         ContractEntity contractEntity = contractRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + id));
 
-        return modelMapper.map(contractEntity, ContractDTO.class);
+        return ContractTransformer.convertToDTO(contractEntity);
     }
 
     @Override
@@ -71,4 +74,5 @@ public class ContractServiceImpl implements ContractService {
                 .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + id));
         contractRepository.delete(contractEntity);
     }
+
 }
