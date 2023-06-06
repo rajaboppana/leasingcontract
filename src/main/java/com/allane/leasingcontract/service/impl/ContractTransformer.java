@@ -20,6 +20,7 @@ public class ContractTransformer {
     public static CustomerDTO convertToDTO(CustomerEntity customerEntity) {
         if (customerEntity != null) {
             CustomerDTO customerDTO = new CustomerDTO();
+            customerDTO.setId(customerEntity.getId());
             customerDTO.setFirstName(customerEntity.getFirstName());
             customerDTO.setLastName(customerEntity.getLastName());
             customerDTO.setBirthdate(customerEntity.getBirthdate());
@@ -31,6 +32,7 @@ public class ContractTransformer {
     public static VehicleDTO convertToDTO(VehicleEntity vehicleEntity) {
         if (vehicleEntity != null) {
             VehicleDTO vehicleDTO = new VehicleDTO();
+            vehicleDTO.setId(vehicleEntity.getId());
             vehicleDTO.setBrand(vehicleEntity.getBrand());
             vehicleDTO.setModel(vehicleEntity.getModel());
             vehicleDTO.setModelYear(vehicleEntity.getModelYear());
@@ -51,6 +53,7 @@ public class ContractTransformer {
 
     public static CustomerEntity convertToEntity(CustomerDTO customerDTO) {
         CustomerEntity customerEntity = new CustomerEntity();
+        customerEntity.setId(customerDTO.getId());
         customerEntity.setFirstName(customerDTO.getFirstName());
         customerEntity.setLastName(customerDTO.getLastName());
         customerEntity.setBirthdate(customerDTO.getBirthdate());
@@ -59,6 +62,7 @@ public class ContractTransformer {
 
     public static VehicleEntity convertToEntity(VehicleDTO vehicleDTO) {
         VehicleEntity vehicleEntity = new VehicleEntity();
+        vehicleEntity.setId(vehicleDTO.getId());
         vehicleEntity.setBrand(vehicleDTO.getBrand());
         vehicleEntity.setModel(vehicleDTO.getModel());
         vehicleEntity.setModelYear(vehicleDTO.getModelYear());

@@ -9,7 +9,7 @@ public class VehicleEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "brand", nullable = false)
     private String brand;
@@ -18,7 +18,7 @@ public class VehicleEntity {
     private String model;
 
     @Column(name = "model_year", nullable = false)
-    private int modelYear;
+    private Integer modelYear;
 
     @Column(name = "vin")
     private String vin;
@@ -30,11 +30,11 @@ public class VehicleEntity {
     @JoinColumn(name = "id")
     private ContractEntity contract;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -54,11 +54,11 @@ public class VehicleEntity {
         this.model = model;
     }
 
-    public int getModelYear() {
+    public Integer getModelYear() {
         return modelYear;
     }
 
-    public void setModelYear(int modelYear) {
+    public void setModelYear(Integer modelYear) {
         this.modelYear = modelYear;
     }
 

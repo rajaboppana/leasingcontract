@@ -11,12 +11,7 @@ import com.allane.leasingcontract.service.exception.ResourceNotFoundException;
 import com.allane.leasingcontract.service.impl.ContractServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.modelmapper.ModelMapper;
+import org.mockito.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,18 +19,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 class ContractServiceImplTest {
 
     @Mock
     private ContractRepository contractRepository;
-
-    @Mock
-    private ModelMapper modelMapper;
 
     @InjectMocks
     private ContractServiceImpl contractService;
@@ -59,7 +51,6 @@ class ContractServiceImplTest {
         List<ContractDTO> expectedContractDTOList = new ArrayList<>();
         expectedContractDTOList.add(new ContractDTO());
         expectedContractDTOList.add(new ContractDTO());
-        when(modelMapper.map(any(ContractEntity.class), eq(ContractDTO.class))).thenReturn(new ContractDTO());
 
         // Act
         List<ContractDTO> contractDTOList = contractService.getContracts();

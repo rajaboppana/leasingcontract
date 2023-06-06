@@ -4,8 +4,6 @@ import com.allane.leasingcontract.model.ContractDTO;
 import com.allane.leasingcontract.service.impl.ContractServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -35,9 +33,6 @@ public class ITLeasingContractTest {
         registry.add("spring.jpa.database-platform", () -> "org.hibernate.dialect.MySQL8Dialect");
         registry.add("spring.jpa.properties.hibernate.dialect", () -> "org.hibernate.dialect.MySQL8Dialect");
     }
-
-    @Mock
-    private ModelMapper modelMapper;
 
     @Autowired
     private ContractServiceImpl contractService;

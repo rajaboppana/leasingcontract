@@ -7,16 +7,22 @@ import com.allane.leasingcontract.service.ContractService;
 import com.allane.leasingcontract.service.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Transactional
 public class ContractServiceImpl implements ContractService {
 
     private ContractRepository contractRepository;
 
-    public ContractServiceImpl(ContractRepository contractRepository) {
+    private EntityManager em;
+
+    public ContractServiceImpl(ContractRepository contractRepository, EntityManager em) {
         this.contractRepository = contractRepository;
+        this.em = em;
     }
 
     @Override
@@ -38,8 +44,10 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public ContractDTO createContract(ContractDTO contractDTO) {
+
         ContractEntity contractEntity = ContractTransformer.convertToEntity(contractDTO);
         ContractEntity savedContract = contractRepository.save(contractEntity);
+        em.refresh(savedContract);
         return ContractTransformer.convertToDTO(savedContract);
     }
 
@@ -56,7 +64,7 @@ public class ContractServiceImpl implements ContractService {
             existingContract.setCustomer(null);
         }
         ContractEntity updatedContract = contractRepository.save(existingContract);
-
+        em.refresh(updatedContract);
         return ContractTransformer.convertToDTO(updatedContract);
     }
 

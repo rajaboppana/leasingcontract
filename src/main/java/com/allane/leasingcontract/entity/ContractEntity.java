@@ -14,11 +14,12 @@ public class ContractEntity {
     @Column(name = "monthly_rate", nullable = false, precision = 10, scale = 2)
     private BigDecimal monthlyRate;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     @JoinColumn(name = "customer_id")
     private CustomerEntity customer;
 
-    @OneToOne(mappedBy = "contract")
+    @OneToOne
+    @JoinColumn(name = "vehicle_id")
     private VehicleEntity vehicle;
 
     public int getId() {

@@ -7,28 +7,20 @@ import com.allane.leasingcontract.service.exception.ResourceNotFoundException;
 import com.allane.leasingcontract.service.impl.CustomerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.modelmapper.ModelMapper;
+import org.mockito.*;
 
+import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 class CustomerServiceImplTest {
 
     @Mock
     private CustomerRepository customerRepository;
-
-    @Mock
-    private ModelMapper modelMapper;
 
     @InjectMocks
     private CustomerServiceImpl customerService;
@@ -44,11 +36,9 @@ class CustomerServiceImplTest {
     @Test
     void testCreateCustomer() {
         // Arrange
-        CustomerDTO customerDTO = new CustomerDTO();
-        CustomerEntity savedCustomerEntity = new CustomerEntity();
-        when(modelMapper.map(eq(customerDTO), eq(CustomerEntity.class))).thenReturn(savedCustomerEntity);
+        CustomerDTO customerDTO = createCustomerDTO();
+        CustomerEntity savedCustomerEntity = createCustomerEntity();
         when(customerRepository.save(any(CustomerEntity.class))).thenReturn(savedCustomerEntity);
-        when(modelMapper.map(eq(savedCustomerEntity), eq(CustomerDTO.class))).thenReturn(new CustomerDTO());
 
         // Act
         CustomerDTO createdCustomerDTO = customerService.createCustomer(customerDTO);
@@ -56,8 +46,10 @@ class CustomerServiceImplTest {
         // Assert
         verify(customerRepository, times(1)).save(customerEntityCaptor.capture());
         CustomerEntity capturedCustomerEntity = customerEntityCaptor.getValue();
-        assertEquals(savedCustomerEntity, capturedCustomerEntity);
-        assertEquals(createdCustomerDTO, new CustomerDTO());
+        assertEquals(savedCustomerEntity.getFirstName(), capturedCustomerEntity.getFirstName());
+        assertEquals(savedCustomerEntity.getBirthdate(), capturedCustomerEntity.getBirthdate());
+        assertEquals(createdCustomerDTO.getFirstName(), customerDTO.getFirstName());
+        assertEquals(createdCustomerDTO.getBirthdate(), customerDTO.getBirthdate());
     }
 
     @Test
@@ -67,9 +59,7 @@ class CustomerServiceImplTest {
         CustomerDTO customerDTO = new CustomerDTO();
         CustomerEntity existingCustomerEntity = new CustomerEntity();
         when(customerRepository.findById(id)).thenReturn(Optional.of(existingCustomerEntity));
-        doNothing().when(modelMapper).map(eq(customerDTO), any(CustomerEntity.class));
         when(customerRepository.save(any(CustomerEntity.class))).thenReturn(existingCustomerEntity);
-        when(modelMapper.map(eq(existingCustomerEntity), eq(CustomerDTO.class))).thenReturn(new CustomerDTO());
 
         // Act
         CustomerDTO updatedCustomerDTO = customerService.updateCustomer(id, customerDTO);
@@ -98,7 +88,6 @@ class CustomerServiceImplTest {
         int id = 1;
         CustomerEntity customerEntity = new CustomerEntity();
         when(customerRepository.findById(id)).thenReturn(Optional.of(customerEntity));
-        when(modelMapper.map(eq(customerEntity), eq(CustomerDTO.class))).thenReturn(new CustomerDTO());
 
         // Act
         CustomerDTO retrievedCustomerDTO = customerService.getCustomer(id);
@@ -139,5 +128,21 @@ class CustomerServiceImplTest {
 
         // Act and Assert
         assertThrows(ResourceNotFoundException.class, () -> customerService.deleteCustomer(id));
+    }
+
+    private CustomerEntity createCustomerEntity(){
+        CustomerEntity customer = new CustomerEntity();
+        customer.setFirstName("John");
+        customer.setLastName("Doe");
+        customer.setBirthdate(new Date());
+        return customer;
+    }
+
+    private CustomerDTO createCustomerDTO(){
+        CustomerDTO customer = new CustomerDTO();
+        customer.setFirstName("John");
+        customer.setLastName("Doe");
+        customer.setBirthdate(new Date());
+        return customer;
     }
 }

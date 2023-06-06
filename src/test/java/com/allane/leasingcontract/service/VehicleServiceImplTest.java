@@ -45,7 +45,7 @@ class VehicleServiceImplTest {
         vehicleDTO.setVin("ABC123");
         vehicleDTO.setPrice(BigDecimal.valueOf(25000));
 
-        when(vehicleRepository.save(any(VehicleEntity.class))).thenReturn(new VehicleEntity());
+        when(vehicleRepository.save(any(VehicleEntity.class))).thenReturn(createVehicleEntity());
 
         // Act
         VehicleDTO savedVehicle = vehicleService.createVehicle(vehicleDTO);
@@ -199,6 +199,15 @@ class VehicleServiceImplTest {
         // Assert
         assertFalse(isDeleted);
         verify(vehicleRepository, never()).delete(any());
+    }
+
+    private VehicleEntity createVehicleEntity() {
+        VehicleEntity vehicle = new VehicleEntity();
+        vehicle.setBrand("Toyota");
+        vehicle.setModel("Camry");
+        vehicle.setModelYear(2022);
+        vehicle.setPrice(new BigDecimal("25000.00"));
+        return vehicle;
     }
 
 }
