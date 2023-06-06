@@ -18,11 +18,11 @@ public class ContractServiceImpl implements ContractService {
 
     private ContractRepository contractRepository;
 
-    private EntityManager em;
+    private EntityManager entityManager;
 
-    public ContractServiceImpl(ContractRepository contractRepository, EntityManager em) {
+    public ContractServiceImpl(ContractRepository contractRepository, EntityManager entityManager) {
         this.contractRepository = contractRepository;
-        this.em = em;
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class ContractServiceImpl implements ContractService {
 
         ContractEntity contractEntity = ContractTransformer.convertToEntity(contractDTO);
         ContractEntity savedContract = contractRepository.save(contractEntity);
-        em.refresh(savedContract);
+        entityManager.refresh(savedContract);
         return ContractTransformer.convertToDTO(savedContract);
     }
 
@@ -64,7 +64,7 @@ public class ContractServiceImpl implements ContractService {
             existingContract.setCustomer(null);
         }
         ContractEntity updatedContract = contractRepository.save(existingContract);
-        em.refresh(updatedContract);
+        entityManager.refresh(updatedContract);
         return ContractTransformer.convertToDTO(updatedContract);
     }
 
