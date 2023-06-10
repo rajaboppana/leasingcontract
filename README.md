@@ -1,3 +1,5 @@
+# Leasing Contract Application
+
 ## Getting Started
 
 1. Find `Dockerfile` and `docker-leasing-schema.sql` files located in the project
@@ -13,9 +15,17 @@
    ```shell
    docker run -p 3306:3306 -d leasing_db
 
-4. Run `LeasingcontractApplication.java` to run the application.
+## Running The Application in command line
 
-5. Find `data.sql` to create the initial schema. 
+In the project directory execute the following commands.
+
+Build the application
+
+`./gradlew build`
+
+Run the application
+
+`./gradlew bootRun`
 
 ## Implementation
 

@@ -1,6 +1,5 @@
 package com.allane.leasingcontract.controller;
 
-import com.allane.leasingcontract.controller.impl.VehicleControllerImpl;
 import com.allane.leasingcontract.model.VehicleDTO;
 import com.allane.leasingcontract.service.VehicleService;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +25,7 @@ public class VehicleControllerTest {
     private VehicleService vehicleService;
 
     @InjectMocks
-    private VehicleControllerImpl vehicleController;
+    private VehicleController vehicleController;
 
     @BeforeEach
     public void setup() {

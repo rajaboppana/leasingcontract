@@ -1,15 +1,53 @@
 package com.allane.leasingcontract.controller;
 
 import com.allane.leasingcontract.model.VehicleDTO;
+import com.allane.leasingcontract.service.VehicleService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-public interface VehicleController {
+@RestController
+@RequestMapping("/vehicles")
+public class VehicleController {
+    private final VehicleService vehicleService;
 
-    ResponseEntity<VehicleDTO> createVehicle(VehicleDTO vehicleDTO);
+    public VehicleController(VehicleService vehicleService) {
+        this.vehicleService = vehicleService;
+    }
 
-    ResponseEntity<VehicleDTO> getVehicleById(int id);
+    @PostMapping
+    public ResponseEntity<VehicleDTO> createVehicle(@RequestBody VehicleDTO vehicleDTO) {
+        VehicleDTO createdVehicle = vehicleService.createVehicle(vehicleDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdVehicle);
+    }
 
-    ResponseEntity<VehicleDTO> updateVehicle(int id, VehicleDTO vehicleDTO);
+    @GetMapping("/{id}")
+    public ResponseEntity<VehicleDTO> getVehicleById(@PathVariable int id) {
+        VehicleDTO vehicle = vehicleService.getVehicleById(id);
+        if (vehicle != null) {
+            return ResponseEntity.ok(vehicle);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
-    ResponseEntity<Void> deleteVehicle(int id);
+    @PutMapping("/{id}")
+    public ResponseEntity<VehicleDTO> updateVehicle(@PathVariable int id, @RequestBody VehicleDTO vehicleDTO) {
+        VehicleDTO updatedVehicle = vehicleService.updateVehicle(id, vehicleDTO);
+        if (updatedVehicle != null) {
+            return ResponseEntity.ok(updatedVehicle);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteVehicle(@PathVariable int id) {
+        boolean deleted = vehicleService.deleteVehicle(id);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

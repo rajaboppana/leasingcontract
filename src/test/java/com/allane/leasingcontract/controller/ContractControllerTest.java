@@ -1,6 +1,5 @@
 package com.allane.leasingcontract.controller;
 
-import com.allane.leasingcontract.controller.impl.ContractControllerImpl;
 import com.allane.leasingcontract.model.ContractDTO;
 import com.allane.leasingcontract.service.ContractService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,7 +30,7 @@ class ContractControllerTest {
     private ContractService contractService;
 
     @InjectMocks
-    private ContractControllerImpl contractController;
+    private ContractController contractController;
 
     @BeforeEach
     public void setup() {

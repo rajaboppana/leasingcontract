@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Transactional
@@ -26,17 +26,14 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public List<ContractDTO> getContracts() {
+    public List<ContractDTO> getContracts() throws ResourceNotFoundException {
         List<ContractEntity> contracts = contractRepository.findAll();
-        List<ContractDTO> contractDTOList = new ArrayList<>();
-        if (!contracts.isEmpty()) {
-            for (ContractEntity contract : contracts) {
-                contractDTOList.add(ContractTransformer.convertToDTO(contract));
-            }
-        }
+        List<ContractDTO> contractDTOList = contracts.stream()
+                .map(ContractTransformer::convertToDTO)
+                .collect(Collectors.toList());
 
         if (contractDTOList.isEmpty()) {
-            throw new RuntimeException("There are no contracts available at this moment");
+            throw new ResourceNotFoundException("There are no contracts available at this moment");
         }
 
         return contractDTOList;

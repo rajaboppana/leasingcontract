@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
+import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +30,9 @@ class ContractServiceImplTest {
     @Mock
     private ContractRepository contractRepository;
 
+    @Mock
+    private EntityManager entityManager;
+
     @InjectMocks
     private ContractServiceImpl contractService;
 
@@ -41,7 +45,7 @@ class ContractServiceImplTest {
     }
 
     @Test
-    void testGetContracts() {
+    void testGetContracts() throws Exception {
         // Arrange
         List<ContractEntity> contractEntities = new ArrayList<>();
         contractEntities.add(new ContractEntity());
@@ -67,7 +71,8 @@ class ContractServiceImplTest {
         when(contractRepository.findAll()).thenReturn(new ArrayList<>());
 
         // Act and Assert
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> contractService.getContracts());
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
+                () -> contractService.getContracts());
         assertEquals("There are no contracts available at this moment", exception.getMessage());
     }
 

@@ -6,7 +6,7 @@ import com.allane.leasingcontract.service.exception.ResourceNotFoundException;
 import java.util.List;
 
 public interface ContractService {
-    List<ContractDTO> getContracts();
+    List<ContractDTO> getContracts() throws ResourceNotFoundException;
     ContractDTO createContract(ContractDTO contractDTO);
     ContractDTO updateContract(int id, ContractDTO contractDTO) throws ResourceNotFoundException;
     ContractDTO getContract(int id) throws ResourceNotFoundException;

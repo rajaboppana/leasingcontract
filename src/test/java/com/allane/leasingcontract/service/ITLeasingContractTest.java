@@ -38,7 +38,7 @@ public class ITLeasingContractTest {
     private ContractServiceImpl contractService;
 
     @Test
-    void testGetContracts() {
+    void testGetContracts() throws Exception {
         // Act
         List<ContractDTO> contractDTOList = contractService.getContracts();
 
