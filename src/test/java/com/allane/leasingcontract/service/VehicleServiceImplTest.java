@@ -3,14 +3,11 @@ package com.allane.leasingcontract.service;
 import com.allane.leasingcontract.entity.VehicleEntity;
 import com.allane.leasingcontract.model.VehicleDTO;
 import com.allane.leasingcontract.repository.VehicleRepository;
+import com.allane.leasingcontract.service.exception.ResourceNotFoundException;
 import com.allane.leasingcontract.service.impl.VehicleServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -63,7 +60,7 @@ class VehicleServiceImplTest {
     }
 
     @Test
-    void getVehicleById_ExistingId_ShouldReturnVehicleDTO() {
+    void getVehicleById_ExistingId_ShouldReturnVehicleDTO() throws Exception {
         // Arrange
         int id = 1;
         VehicleEntity vehicleEntity = new VehicleEntity();
@@ -89,21 +86,18 @@ class VehicleServiceImplTest {
     }
 
     @Test
-    void getVehicleById_NonexistentId_ShouldReturnNull() {
+    void getVehicleById_NonexistentId_ShouldReturnNull() throws Exception {
         // Arrange
         int id = 1;
 
         when(vehicleRepository.findById(id)).thenReturn(Optional.empty());
 
-        // Act
-        VehicleDTO foundVehicle = vehicleService.getVehicleById(id);
-
         // Assert
-        assertNull(foundVehicle);
+        assertThrows(ResourceNotFoundException.class, () -> vehicleService.getVehicleById(id));
     }
 
     @Test
-    void updateVehicle_ExistingId_ShouldUpdateAndReturnUpdatedVehicleDTO() {
+    void updateVehicle_ExistingId_ShouldUpdateAndReturnUpdatedVehicleDTO() throws Exception {
         // Arrange
         int id = 1;
         VehicleDTO updatedVehicleDTO = new VehicleDTO();
@@ -145,27 +139,20 @@ class VehicleServiceImplTest {
     }
 
     @Test
-    void updateVehicle_NonexistentId_ShouldReturnNull() {
+    void updateVehicle_NonexistentId_ShouldReturnNull() throws Exception {
         // Arrange
         int id = 1;
         VehicleDTO updatedVehicleDTO = new VehicleDTO();
-        updatedVehicleDTO.setBrand("Toyota");
-        updatedVehicleDTO.setModel("Corolla");
-        updatedVehicleDTO.setModelYear(2023);
-        updatedVehicleDTO.setVin("XYZ789");
-        updatedVehicleDTO.setPrice(BigDecimal.valueOf(30000));
 
         when(vehicleRepository.findById(id)).thenReturn(Optional.empty());
 
-        // Act
-        VehicleDTO updatedVehicle = vehicleService.updateVehicle(id, updatedVehicleDTO);
-
         // Assert
-        assertNull(updatedVehicle);
+        assertThrows(ResourceNotFoundException.class, ()-> vehicleService.updateVehicle
+                (id, updatedVehicleDTO));
     }
 
     @Test
-    void deleteVehicle_ExistingId_ShouldDeleteAndReturnTrue() {
+    void deleteVehicle_ExistingId_ShouldDeleteAndReturnTrue() throws Exception {
         // Arrange
         int id = 1;
         VehicleEntity existingVehicleEntity = new VehicleEntity();
@@ -187,17 +174,14 @@ class VehicleServiceImplTest {
     }
 
     @Test
-    void deleteVehicle_NonexistentId_ShouldReturnFalse() {
+    void deleteVehicle_NonexistentId_ShouldReturnFalse() throws Exception {
         // Arrange
         int id = 1;
-
         when(vehicleRepository.findById(id)).thenReturn(Optional.empty());
 
-        // Act
-        boolean isDeleted = vehicleService.deleteVehicle(id);
-
         // Assert
-        assertFalse(isDeleted);
+        assertThrows(ResourceNotFoundException.class,
+                () -> vehicleService.deleteVehicle(id));
         verify(vehicleRepository, never()).delete(any());
     }
 

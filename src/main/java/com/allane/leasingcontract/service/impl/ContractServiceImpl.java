@@ -6,9 +6,9 @@ import com.allane.leasingcontract.repository.ContractRepository;
 import com.allane.leasingcontract.service.ContractService;
 import com.allane.leasingcontract.service.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 

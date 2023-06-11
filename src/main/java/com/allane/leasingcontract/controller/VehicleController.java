@@ -2,6 +2,7 @@ package com.allane.leasingcontract.controller;
 
 import com.allane.leasingcontract.model.VehicleDTO;
 import com.allane.leasingcontract.service.VehicleService;
+import com.allane.leasingcontract.service.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,32 +23,20 @@ public class VehicleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VehicleDTO> getVehicleById(@PathVariable int id) {
+    public ResponseEntity<VehicleDTO> getVehicleById(@PathVariable int id) throws ResourceNotFoundException {
         VehicleDTO vehicle = vehicleService.getVehicleById(id);
-        if (vehicle != null) {
-            return ResponseEntity.ok(vehicle);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(vehicle);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<VehicleDTO> updateVehicle(@PathVariable int id, @RequestBody VehicleDTO vehicleDTO) {
+    public ResponseEntity<VehicleDTO> updateVehicle(@PathVariable int id, @RequestBody VehicleDTO vehicleDTO) throws ResourceNotFoundException {
         VehicleDTO updatedVehicle = vehicleService.updateVehicle(id, vehicleDTO);
-        if (updatedVehicle != null) {
-            return ResponseEntity.ok(updatedVehicle);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(updatedVehicle);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteVehicle(@PathVariable int id) {
+    public ResponseEntity<Boolean> deleteVehicle(@PathVariable int id) throws ResourceNotFoundException {
         boolean deleted = vehicleService.deleteVehicle(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(deleted);
     }
 }
