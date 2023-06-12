@@ -15,8 +15,8 @@ import org.mockito.*;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -186,7 +186,7 @@ class ContractServiceImplTest {
         CustomerDTO customer = new CustomerDTO();
         customer.setFirstName("John");
         customer.setLastName("Doe");
-        customer.setBirthdate(new Date());
+        customer.setBirthdate(LocalDate.of(1999,1,10));
 
         VehicleDTO vehicle = new VehicleDTO();
         vehicle.setBrand("Toyota");
@@ -208,7 +208,7 @@ class ContractServiceImplTest {
         CustomerEntity customer = new CustomerEntity();
         customer.setFirstName("John");
         customer.setLastName("Doe");
-        customer.setBirthdate(new Date());
+        customer.setBirthdate(LocalDate.of(1999,1,10));
 
         VehicleEntity vehicle = new VehicleEntity();
         vehicle.setBrand("Toyota");

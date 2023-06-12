@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -134,7 +134,7 @@ class CustomerServiceImplTest {
         CustomerEntity customer = new CustomerEntity();
         customer.setFirstName("John");
         customer.setLastName("Doe");
-        customer.setBirthdate(new Date());
+        customer.setBirthdate(LocalDate.of(1999,1,10));
         return customer;
     }
 
@@ -142,7 +142,7 @@ class CustomerServiceImplTest {
         CustomerDTO customer = new CustomerDTO();
         customer.setFirstName("John");
         customer.setLastName("Doe");
-        customer.setBirthdate(new Date());
+        customer.setBirthdate(LocalDate.of(1999,1,10));
         return customer;
     }
 }

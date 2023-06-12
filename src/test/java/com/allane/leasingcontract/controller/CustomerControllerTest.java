@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -41,7 +41,7 @@ public class CustomerControllerTest {
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setFirstName("John");
         customerDTO.setLastName("Doe");
-        customerDTO.setBirthdate(new Date());
+        customerDTO.setBirthdate(LocalDate.of(1999,1,10));
 
         
         Mockito.when(customerService.createCustomer(any(CustomerDTO.class)))
@@ -69,7 +69,7 @@ public class CustomerControllerTest {
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setFirstName("John");
         customerDTO.setLastName("Doe");
-        customerDTO.setBirthdate(new Date());
+        customerDTO.setBirthdate(LocalDate.of(1999,1,10));
 
         
         Mockito.when(customerService.updateCustomer(eq(customerId), any(CustomerDTO.class)))
@@ -98,7 +98,7 @@ public class CustomerControllerTest {
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setFirstName("John");
         customerDTO.setLastName("Doe");
-        customerDTO.setBirthdate(new Date());
+        customerDTO.setBirthdate(LocalDate.of(1999,1,10));
         
         Mockito.when(customerService.getCustomer(eq(customerId)))
                 .thenReturn(customerDTO);
