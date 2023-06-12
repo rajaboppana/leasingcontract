@@ -39,5 +39,5 @@ tasks.named('test') {
 }
 
 test{
-    exclude 'com/allane/leasingcontractservice/ITLeasingContractTest.class'
+    exclude 'com/allane/leasingcontract/service/ITLeasingContractTest.class'
 }
