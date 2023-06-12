@@ -1,7 +1,7 @@
 package com.allane.leasingcontract.entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "customer")
@@ -18,7 +18,7 @@ public class CustomerEntity {
     private String lastName;
 
     @Column(name = "birthdate", nullable = false)
-    private Date birthdate;
+    private LocalDate birthdate;
 
     public int getId() {
         return id;
@@ -44,11 +44,11 @@ public class CustomerEntity {
         this.lastName = lastName;
     }
 
-    public Date getBirthdate() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
 }
